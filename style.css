@@ -1,0 +1,184 @@
+body, html{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", 
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", 
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+#layout{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    position:relative;
+}
+
+.winner-display{
+    height: 100%;
+    width: 100%;
+    background-color: grey;
+    opacity: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: -1;
+}
+
+.winner-text{
+    height: 30%;
+    width: 30%;
+    border-radius: 50%;
+    border: black solid 3px;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 400;
+}
+
+#header{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#body{
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#nav-bar{
+    height: 10%;
+    width: 100%;
+}
+
+#game-area{
+    height: 100%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.score-display{
+    height: 100%;
+    width: 200px;
+    font-size: 24px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#board{
+    height: 450px;
+    min-width: 350px;
+    max-width: 25%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.tile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 48px;
+}
+
+.tile:hover{
+    background-color: black;
+}
+
+#box_0{
+    border-bottom: 2.5px black solid;
+    border-right: 2.5px black solid;
+}
+
+#box_1{
+    border-bottom: 2.5px black solid;
+    border-left: 2.5px black solid;
+    border-right: 2.5px black solid;
+}
+
+#box_2{
+    border-bottom: 2.5px black solid;
+    border-left: 2.5px black solid;
+}
+
+#box_3{
+    border-bottom: 2.5px black solid;
+    border-top: 2.5px black solid;
+    border-right: 2.5px black solid;
+}
+
+#box_4{
+    border-top: 2.5px black solid;
+    border-bottom: 2.5px black solid;
+    border-left: 2.5px black solid;
+    border-right: 2.5px black solid;
+}
+
+#box_5{
+    border-bottom: 2.5px black solid;
+    border-top: 2.5px black solid;
+    border-left: 2.5px black solid;
+}
+
+#box_6{
+    border-top: 2.5px black solid;
+    border-right: 2.5px black solid;
+}
+
+#box_7{
+    border-top: 2.5px black solid;
+    border-left: 2.5px black solid;
+    border-right: 2.5px black solid;
+}
+
+#box_8{
+    border-top: 2.5px black solid;
+    border-left: 2.5px black solid;
+}
+
+#restart{
+    height: 15%;
+    max-width: 350px;
+    min-width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.restartBtn{
+    height: 65%;
+    width: 60%;
+    border: 5px solid black;
+    background-color: white;
+}
+
+.restartBtn:hover{
+    color: white;
+    background-color: black;
+}
+
+
+#footer{
+    height:10%;
+    width: 100%;
+}
