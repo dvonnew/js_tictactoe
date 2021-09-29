@@ -10,10 +10,11 @@ const gameBoard = (function(){
 
     const container = document.querySelector('#board')
     const board = ['','','','','','','','','']
+    
 
     function _createBoard (player1, player2){
-        
         let turn = 0
+        displayController.displayScore(player1, player2)
 
         for (i = 0; i < 9; i++){
             let div = document.createElement('div');
@@ -27,90 +28,83 @@ const gameBoard = (function(){
                     if (turn %2 == 0) {
                         div.innerHTML = player1.icon
                         board[div.dataset.index] = player1.icon
-                        _winCheck(player1)
+                        if(_winCheck(player1)){
+                            displayController.displayScore(player1,player2)
+                        }
+                        console.log(turn)
                     } else {
                         div.innerHTML = player2.icon
                         board[div.dataset.index] = player2.icon
-                        _winCheck(player2)
+                        if(_winCheck(player2)){
+                            displayController.displayScore(player1,player2)
+                        }
                     }
                     turn++
                 }
             })
         }
-        if(_restartBoard()){
-            turn = 0
-            return turn
-        }
-
-        displayController.displayScore(player1,player2)
+        _restartBoard(turn)
     }
 
     function _winCheck(player){
         if (board[0] == player.icon && board[1] == player.icon && board[2] == player.icon){
-            let winner = board[0]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[3] == player.icon && board[4] == player.icon && board[5] == player.icon){
-            let winner = board[3]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[6] == player.icon && board[7] == player.icon && board[8] == player.icon){
-            let winner = board[6]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[0] == player.icon && board[3] ==player.icon && board[6] == player.icon){
-            let winner = board[0]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[1] == player.icon && board[4] == player.icon && board[7] == player.icon){
-            winner = board[1]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[2] == player.icon && board[5] == player.icon && board[8] == player.icon){
-            winner = board[2]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[0] == player.icon && board[4] == player.icon && board[8] == player.icon){
-            winner = board[0]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board[2] == player.icon && board[4] == player.icon && board[6] == player.icon){
-            winner = board[2]
             player.score +=1
-            // displayController.displayWinner(player)
+            displayController.displayWinner(player)
         }
         else if (board.slice(0,9) == (0, 9)){
             console.log('Tie Game')}
         return player.score
         }
 
-    function _restartBoard(){
+    function _restartBoard(turn){
         
         const restartButton = document.getElementById('restart')
         const tiles = document.querySelectorAll('.tile')
-        const layout = document.querySelector('#layout')
-        const displayScreen = document.querySelector('.winner-display')
 
         restartButton.addEventListener('click', ()=>{
             tiles.forEach(tile => tile.innerHTML = '')
             board.forEach(function(item, index){
                 this[index]=''
             }, board)
-            console.log(board)
+            console.log(turn)
+            return turn = 0
         })
+        
     }
 
     return{
         createBoard: _createBoard,
         board: board,
     }
+
 })();
 
 const player = (icon) => {
@@ -120,17 +114,16 @@ const player = (icon) => {
     this.score = 0
 
     return {icon, name, score}
+
 }
 
 const displayController = (function(){
 
-    const player1Score = document.getElementById('player1')
-    const player2Score = document.getElementById('player2')
-    
     const _displayScore = function(player1, player2){
+        const player1Score = document.getElementById('player1')
+        const player2Score = document.getElementById('player2')
         player1Score.innerHTML = `${player1.name} Score: ${player1.score}`
         player2Score.innerHTML = `${player2.name} Score: ${player2.score}`
-
 
     }
 
@@ -145,12 +138,26 @@ const displayController = (function(){
         displayText.innerHTML = `${player.name} Wins!`
 
         displayScreen.appendChild(displayText)
+
+    }
+
+    const _removeDisplay = function (){
+        const body = document.querySelector('#layout')
+        const displayScreen = document.createElement('div')
+        const displayText = document.createElement('div')
+
+        body.addEventListener('click', ()=>{
+            displayScreen.removeChild(displayText)
+            body.removeChild(displayScreen)
+        })
     }
 
     return{
         displayWinner: _displayWinner,
-        displayScore: _displayScore
+        displayScore: _displayScore,
+        removeDisplay: _removeDisplay
     }
+
 })();
 
 game()

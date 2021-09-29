@@ -22,18 +22,18 @@ body, html{
     height: 100%;
     width: 100%;
     background-color: grey;
-    opacity: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    z-index: -1;
+    z-index: 500;
 }
 
 .winner-text{
-    height: 30%;
-    width: 30%;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
+    opacity: 70%;
     border: black solid 3px;
     font-size: 48px;
     display: flex;
