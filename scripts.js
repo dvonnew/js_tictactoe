@@ -1,112 +1,81 @@
-function game(){
+class GameBoard {
+    constructor(displayController, player1, player2) {
+        this.dc = displayController
+        this.player1 = player1
+        this.player2 = player2
+        this.board = ['','','','','','','','','']
+        this.container = document.querySelector('#board')
+        this.i=0
+    }
 
-    const player1 = player('X')
-    const player2 = player('O')
-    gameBoard.createBoard(player1, player2)
-
-}
-
-const gameBoard = (function(){
-
-    const container = document.querySelector('#board')
-    const board = ['','','','','','','','','']
-
-    function _createBoard (player1, player2){
+    createBoard (){
 
         let turn = 0
-        displayController.displayScore(player1, player2)
+        this.dc.updateScores(this.player1, this.player2)
 
-        for (i = 0; i < 9; i++){
+        for (this.i = 0; this.i < 9; this.i++){
             let div = document.createElement('div');
-            div.id = `box_${i}`
-            div.dataset.index = i
-            container.appendChild(div).className = 'tile'
+            div.id = `box_${this.i}`
+            div.dataset.index = this.i
+            this.container.appendChild(div).className = 'tile'
             div.innerHTML = ''
             
             div.addEventListener('click', ()=>{
                 if(div.innerHTML === ''){
                     if (turn %2 == 0) {
-                        div.innerHTML = player1.icon
-                        board[div.dataset.index] = player1.icon
-                        if(_winCheck(player1)){
-                            displayController.displayScore(player1,player2)
-                            displayController.removeDisplay()
+                        div.innerHTML = this.player1.icon
+                        this.board[div.dataset.index] = this.player1.icon
+                        if(this._winCheck(this.player1)){
+                            this.dc.updateScores(this.player1, this.player2)
+                            this.dc.displayWinner(this.player1)
                         }
                     } else {
-                        div.innerHTML = player2.icon
-                        board[div.dataset.index] = player2.icon
-                        if(_winCheck(player2)){
-                            displayController.displayScore(player1,player2)
-                            displayController.removeDisplay()
+                        div.innerHTML = this.player2.icon
+                        board[div.dataset.index] = this.player2.icon
+                        if(this._winCheck(this.player2)){
+                            this.dc.updateScores(this.player1,this.player2)
+                            this.dc.displayWinner(this.player2)
                         }
                     }
                     turn++
                 }
             })
         }
-        _restartBoard(turn)
+        this._createRestartButton(turn)
     }
 
-    function _winCheck(player){
-        if (board[0] == player.icon && board[1] == player.icon && board[2] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
+    _winCheck(player){
+        if ((this.board[0] == player.icon && this.board[1] == player.icon && this.board[2] == player.icon) ||
+        (this.board[3] == player.icon && this.board[4] == player.icon && this.board[5] == player.icon) ||
+        (this.board[6] == player.icon && this.board[7] == player.icon && this.board[8] == player.icon) ||
+        (this.board[0] == player.icon && this.board[3] == player.icon && this.board[6] == player.icon) ||
+        (this.board[1] == player.icon && this.board[4] == player.icon && this.board[7] == player.icon) ||
+        (this.board[2] == player.icon && this.board[5] == player.icon && this.board[8] == player.icon) ||
+        (this.board[0] == player.icon && this.board[4] == player.icon && this.board[8] == player.icon) ||
+        (this.board[2] == player.icon && this.board[4] == player.icon && this.board[6] == player.icon)) {
+            player.score += 1
+            return true
+        } else if (this.board.slice(0,9) == (0, 9)){
+            console.log('Tie Game')
+            return false
         }
-        else if (board[3] == player.icon && board[4] == player.icon && board[5] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board[6] == player.icon && board[7] == player.icon && board[8] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board[0] == player.icon && board[3] ==player.icon && board[6] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board[1] == player.icon && board[4] == player.icon && board[7] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board[2] == player.icon && board[5] == player.icon && board[8] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board[0] == player.icon && board[4] == player.icon && board[8] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board[2] == player.icon && board[4] == player.icon && board[6] == player.icon){
-            player.score +=1
-            displayController.displayWinner(player)
-        }
-        else if (board.slice(0,9) == (0, 9)){
-            console.log('Tie Game')}
-        return player.score
+        return false
         }
 
-    function _restartBoard(turn){
+    _createRestartButton(turn){
         
         const restartButton = document.getElementById('restart')
         const tiles = document.querySelectorAll('.tile')
 
         restartButton.addEventListener('click', ()=>{
             tiles.forEach(tile => tile.innerHTML = '')
-            board.forEach(function(item, index){
-                this[index]=''
-            }, board)
-            console.log(turn)
-            return turn = 0
+            this.board = ['','','','','','','','','']
+            turn = 0
         })
         
     }
 
-    return{
-        createBoard: _createBoard,
-        board: board,
-    }
-
-})();
+}
 
 const player = (icon) => {
 
@@ -120,7 +89,7 @@ const player = (icon) => {
 
 const displayController = (function(){
 
-    const _displayScore = function(player1, player2){
+    const _updateScores = function(player1, player2){
         const player1Score = document.getElementById('player1')
         const player2Score = document.getElementById('player2')
         player1Score.innerHTML = `${player1.name} Score: ${player1.score}`
@@ -137,29 +106,25 @@ const displayController = (function(){
         const displayText = document.createElement('div')
         displayText.className = 'winner-text'
         displayText.innerHTML = `${player.name} Wins!`
-
-        displayScreen.appendChild(displayText)
-
-        // _removeDisplay()
-
-    }
-
-    const _removeDisplay = function (){
-        const body = document.querySelector('#layout')
-        const displayScreen = document.querySelector('.winner-display')
-        const displayText = document.querySelector('.winner-text')
-
         displayText.addEventListener('click', ()=>{
             body.removeChild(displayScreen)
         })
+
+        displayScreen.appendChild(displayText)
     }
 
     return{
         displayWinner: _displayWinner,
-        displayScore: _displayScore,
-        removeDisplay: _removeDisplay
+        updateScores: _updateScores,
     }
 
 })();
 
+function game(){
+    let player1 = player('X')
+    let player2 = player('O')
+    let dc = displayController
+    let gameBoard = new GameBoard(dc, player1, player2)
+    gameBoard.createBoard()
+}
 game()
