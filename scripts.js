@@ -10,9 +10,9 @@ const gameBoard = (function(){
 
     const container = document.querySelector('#board')
     const board = ['','','','','','','','','']
-    
 
     function _createBoard (player1, player2){
+
         let turn = 0
         displayController.displayScore(player1, player2)
 
@@ -30,13 +30,14 @@ const gameBoard = (function(){
                         board[div.dataset.index] = player1.icon
                         if(_winCheck(player1)){
                             displayController.displayScore(player1,player2)
+                            displayController.removeDisplay()
                         }
-                        console.log(turn)
                     } else {
                         div.innerHTML = player2.icon
                         board[div.dataset.index] = player2.icon
                         if(_winCheck(player2)){
                             displayController.displayScore(player1,player2)
+                            displayController.removeDisplay()
                         }
                     }
                     turn++
@@ -139,15 +140,16 @@ const displayController = (function(){
 
         displayScreen.appendChild(displayText)
 
+        // _removeDisplay()
+
     }
 
     const _removeDisplay = function (){
         const body = document.querySelector('#layout')
-        const displayScreen = document.createElement('div')
-        const displayText = document.createElement('div')
+        const displayScreen = document.querySelector('.winner-display')
+        const displayText = document.querySelector('.winner-text')
 
-        body.addEventListener('click', ()=>{
-            displayScreen.removeChild(displayText)
+        displayText.addEventListener('click', ()=>{
             body.removeChild(displayScreen)
         })
     }
