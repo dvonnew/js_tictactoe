@@ -31,9 +31,9 @@ class GameBoard {
                         }
                     } else {
                         div.innerHTML = this.player2.icon
-                        board[div.dataset.index] = this.player2.icon
+                        this.board[div.dataset.index] = this.player2.icon
                         if(this._winCheck(this.player2)){
-                            this.dc.updateScores(this.player1,this.player2)
+                            this.dc.updateScores(this.player1, this.player2)
                             this.dc.displayWinner(this.player2)
                         }
                     }
@@ -84,6 +84,14 @@ const player = (icon) => {
     this.score = 0
 
     return {icon, name, score}
+
+}
+
+const computer = () => {
+
+    this.name = 'Computer'
+    this.icon = 'O'
+    this.score = 0
 
 }
 
